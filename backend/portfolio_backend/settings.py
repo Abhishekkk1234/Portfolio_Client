@@ -4,6 +4,7 @@ Everything a non-technical designer needs to run this locally is in the README.
 """
 from pathlib import Path
 from decouple import config, Csv
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -68,11 +69,19 @@ WSGI_APPLICATION = "portfolio_backend.wsgi.application"
 # Database — SQLite by default (zero setup). Swap to Postgres by setting
 # DATABASE_URL-style vars in .env and uncommenting the block if you like.
 # ---------------------------------------------------------------------------
+# # DATABASES = {
+# #     "default": {
+# #         "ENGINE": "django.db.backends.sqlite3",
+# #         "NAME": BASE_DIR / "db.sqlite3",
+# #     }
+
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=not DEBUG,
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -145,3 +154,8 @@ CSRF_TRUSTED_ORIGINS = config(
 # Bump this up if designers upload big photoshoot files
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
