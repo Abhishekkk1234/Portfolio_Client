@@ -69,11 +69,19 @@ WSGI_APPLICATION = "portfolio_backend.wsgi.application"
 # Database — SQLite by default (zero setup). Swap to Postgres by setting
 # DATABASE_URL-style vars in .env and uncommenting the block if you like.
 # ---------------------------------------------------------------------------
+# # DATABASES = {
+# #     "default": {
+# #         "ENGINE": "django.db.backends.sqlite3",
+# #         "NAME": BASE_DIR / "db.sqlite3",
+# #     }
+
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=not DEBUG,
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
