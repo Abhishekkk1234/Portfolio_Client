@@ -1,80 +1,77 @@
-# Portfolio Backend (Django + DRF)
+# Fashion Design Portfolio — Full Stack (Django + React)
 
-## 1. Setup
+A complete portfolio website: Home / About / Collections / Enquiry pages on
+the frontend, a Django REST API backend, and a full no-code admin panel for
+managing everything — designer bio, craft highlights, 8 collections × 8
+artistic elements each (with photo galleries), and incoming enquiries.
 
+```
+portfolio-site/
+├── backend/     Django + Django REST Framework + SQLite + admin panel
+└── frontend/    React (Create React App style) + React Router + Axios
+```
+
+## Quick start (run both together)
+
+**Terminal 1 — backend**
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+python -m venv venv && source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
-```
-
-## 2. Database + admin login
-
-```bash
 python manage.py migrate
 python manage.py createsuperuser
-```
-
-## 3. (Optional) load demo content
-
-Populates 1 designer profile, 4 craft highlights, and 8 collections x 8
-artistic elements, each with 10 placeholder photos — so the site isn't empty
-while you swap in real photography.
-
-```bash
-python manage.py seed_demo_data
-```
-
-## 4. Run
-
-```bash
+python manage.py seed_demo_data     # optional: fills the site with demo content
 python manage.py runserver
 ```
 
-- Admin panel: http://127.0.0.1:8000/admin/
-- API root: http://127.0.0.1:8000/api/
+**Terminal 2 — frontend**
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm start
+```
 
-## Managing content — no coding required
+Now:
+- Website: http://localhost:3000
+- Admin panel (no coding needed to manage content): http://127.0.0.1:8000/admin/
+- Raw API: http://127.0.0.1:8000/api/
 
-Everything on the website is editable from `/admin/`:
+## How the pieces connect
 
-- **Designer Profile** → Home page intro + About page bio/philosophy/photos.
-- **Craft Highlights** → the "details of the craft" blocks on the Home page.
-- **Collections** → click a collection to edit its story, then scroll down to
-  add gallery photos (mark photoshoot shots with the "is photoshoot"
-  checkbox) and add each Artistic Element inline.
-- **Artistic Elements** → open one from the Collections list (or the inline
-  link) to upload its own 10+ photos.
-- **Enquiries** → read-only list of messages submitted from the public
-  Enquiry page.
+- **Database → Admin → API → Frontend.** Every image/text field you fill in
+  the Django admin is immediately available through the REST API, and the
+  React pages fetch that API on load — there is no build step or manual
+  sync required when you add content.
+- **CORS** is configured in `backend/portfolio_backend/settings.py` via
+  `django-cors-headers`, allowing `http://localhost:3000` (the React dev
+  server) to call the API. Update `CORS_ALLOWED_ORIGINS` in `backend/.env`
+  when you deploy the frontend elsewhere.
+- **Media/images** are served from Django's `/media/` path in development;
+  in production, point that at S3/Cloud storage or serve it via nginx.
 
-Drag the "order" number on any list to control display order (collections
-are numbered 01–08 on the site using this field).
+## What the admin panel lets you do without touching code
 
-## API endpoints (consumed by the React frontend)
+- Edit the **Designer Profile** once (Home intro + About bio, philosophy,
+  portrait, contact links) — enforced as a singleton so there's no ambiguity
+  about which profile is live.
+- Add/reorder **Craft Highlights** for the Home page.
+- Add/edit **Collections** — title, genre, season, story, materials, cover
+  photo, publish toggle, and inline photo gallery (mark each photo as a
+  "look" or "photoshoot" shot).
+- Inside each Collection, add its **Artistic Elements** (the 8 pieces), and
+  open each one to upload its own 10+ photo gallery.
+- View submitted **Enquiries** (read-only — they come from the public form).
 
-| Method | Endpoint                          | Purpose                                   |
-|--------|------------------------------------|--------------------------------------------|
-| GET    | `/api/designer/`                  | Designer profile (Home + About)            |
-| GET    | `/api/craft-highlights/`          | Craft blocks for the Home page              |
-| GET    | `/api/collections/`               | Collection grid (list view)                 |
-| GET    | `/api/collections/{slug}/`        | Single collection incl. images + elements   |
-| GET    | `/api/elements/{id}/`             | Single artistic element incl. its gallery    |
-| POST   | `/api/enquiries/`                 | Submit the Enquiry form                      |
+## Extending this
 
-## CORS
+- Swap SQLite for Postgres for production (see `backend/README.md`).
+- Add authentication/checkout if this becomes an e-commerce site later —
+  the models are already structured per-collection/per-piece to support it.
+- Deploy backend (Railway/Render/Fly.io/EC2) and frontend (Netlify/Vercel),
+  then update `CORS_ALLOWED_ORIGINS`/`CSRF_TRUSTED_ORIGINS` and
+  `REACT_APP_API_URL` accordingly.
 
-`CORS_ALLOWED_ORIGINS` in `.env` must include whatever URL the React app
-runs on (defaults to `http://localhost:3000`). Update it before deploying.
-
-## Deploying
-
-- Swap `DATABASES` in `settings.py` for Postgres in production.
-- Set `DJANGO_DEBUG=False`, a real `DJANGO_SECRET_KEY`, and your real domain
-  in `DJANGO_ALLOWED_HOSTS` / `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS`.
-- Serve `/media/` (uploaded photos) via nginx, S3, or another storage
-  backend rather than Django directly — `DEBUG=True` static serving is
-  dev-only.
-- Run `python manage.py collectstatic`.
+See `backend/README.md` and `frontend/README.md` for the full details of
+each half.
