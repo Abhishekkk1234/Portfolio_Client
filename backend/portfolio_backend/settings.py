@@ -154,3 +154,8 @@ CSRF_TRUSTED_ORIGINS = config(
 # Bump this up if designers upload big photoshoot files
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20 MB
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
