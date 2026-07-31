@@ -1,0 +1,11 @@
+/* Small readability tweaks for the nested Collection admin screen */
+.inline-group .inline-related h3 {
+  background: #f4f1ea;
+  border-bottom: 2px solid #8c2f23;
+}
+.inline-group .tabular td.original,
+.inline-group .tabular th { padding-top: 8px; }
+fieldset.module h2 {
+  background: #161412;
+}
+.inline-group { margin-bottom: 24px; }
