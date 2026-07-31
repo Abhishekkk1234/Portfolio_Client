@@ -4,6 +4,7 @@ Everything a non-technical designer needs to run this locally is in the README.
 """
 from pathlib import Path
 from decouple import config, Csv
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
