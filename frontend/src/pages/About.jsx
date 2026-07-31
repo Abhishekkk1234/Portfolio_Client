@@ -254,15 +254,19 @@
 
 
 import React, { useEffect, useState } from 'react';
+import { getDesigner } from '../api/client';
 
 function About() {
   const [designer, setDesigner] = useState(null);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/designer/')
-      .then((res) => res.json())
+      getDesigner()
       .then((data) => setDesigner(data))
       .catch((err) => console.error('Error fetching designer:', err));
+    // fetch('http://127.0.0.1:8000/api/designer/')
+    //   .then((res) => res.json())
+    //   .then((data) => setDesigner(data))
+    //   .catch((err) => console.error('Error fetching designer:', err));
   }, []);
 
   if (!designer) {
