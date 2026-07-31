@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     # local
     "core",
     "cloudinary_storage",
-    "django.contrib.staticfiles",
     "cloudinary",
 ]
 
