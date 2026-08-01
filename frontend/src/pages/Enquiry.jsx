@@ -39,12 +39,16 @@ export default function Enquiry() {
       <div>
         <span className="eyebrow">Enquiry</span>
         <h1 style={{ fontSize: "clamp(34px,4.4vw,54px)" }}>Get in touch</h1>
+      </div>
+      {/* <div>
+        <span className="eyebrow">Enquiry</span>
+        <h1 style={{ fontSize: "clamp(34px,4.4vw,54px)" }}>Get in touch</h1>
         <p style={{ color: "var(--grey)", marginTop: 18, maxWidth: "40ch" }}>
           For bespoke commissions, stockist enquiries, or press requests —
           tell us a little about what you're looking for and we'll respond
           directly.
         </p>
-      </div>
+      </div> */}
 
       <form onSubmit={onSubmit}>
         <div className="field">
