@@ -46,10 +46,16 @@ export default function Home({ designer }) {
             <span className="eyebrow">Craft</span>
             <h2>How each piece is made</h2>
           </div>
+        </div>
+        {/* /* <div className="section-head">
+          <div>
+            <span className="eyebrow">Craft</span>
+            <h2>How each piece is made</h2>
+          </div>
           <p className="section-note">
             Every technique used in the studio, documented in the artisans' own hands.
           </p>
-        </div>
+        </div> */ }
         {crafts === null && <Loading />}
         {crafts && crafts.length === 0 && <Empty label="Add craft highlights from the admin panel." />}
         {crafts && crafts.length > 0 && (
