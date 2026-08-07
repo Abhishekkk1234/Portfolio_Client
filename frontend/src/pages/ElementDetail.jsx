@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getArtisticElement } from "../api/client";
-import { Loading, Empty, Stitch } from "../components/Bits";
+import { Loading, Empty, Stitch, Lightbox } from "../components/Bits";
 
 export default function ElementDetail() {
   const { id } = useParams();
   const [element, setElement] = useState(null);
   const [error, setError] = useState(false);
   const [tab, setTab] = useState("all");
+  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   useEffect(() => {
     setElement(null);
@@ -41,9 +42,7 @@ export default function ElementDetail() {
           Materials<b>{element.material}</b>
         </div>
       )}
-
       <div style={{ margin: "36px 0" }}><Stitch /></div>
-
       <div className="photo-tabs">
         {["all", "look", "photoshoot"].map((t) => (
           <button
@@ -55,16 +54,24 @@ export default function ElementDetail() {
           </button>
         ))}
       </div>
-
       {filtered.length === 0 ? (
         <Empty label="No photos for this piece yet." />
       ) : (
         <div className="masonry">
           {filtered.map((img) => (
-            <img key={img.id} src={img.image} alt={img.caption || element.title} loading="lazy" />
+            <img
+              key={img.id}
+              src={img.image}
+              alt={img.caption || element.title}
+              loading="lazy"
+              onDoubleClick={() => setLightboxSrc(img.image)}
+              style={{ cursor: "zoom-in" }}
+            />
           ))}
         </div>
       )}
+
+      <Lightbox src={lightboxSrc} alt={element.title} onClose={() => setLightboxSrc(null)} />
     </section>
   );
 }
