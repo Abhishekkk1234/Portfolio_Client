@@ -328,7 +328,7 @@ h1, h2, h3 {
 }
 @media (max-width: 640px) { .masonry { columns: 2 160px; } } */
 
-.masonry {
+/* .masonry {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
@@ -343,7 +343,17 @@ h1, h2, h3 {
   height: 300px;
   object-fit: cover;
 } */
-@media (max-width: 640px) { .masonry { grid-template-columns: repeat(2, 1fr); } }
+.masonry {
+  columns: 3 260px;
+  column-gap: 14px;
+}
+.masonry img {
+  width: 100%;
+  margin-bottom: 14px;
+  break-inside: avoid;
+  display: block;
+}
+@media (max-width: 640px) { .masonry { columns: 2 160px; } }
 
 .elements-grid {
   display: grid;
