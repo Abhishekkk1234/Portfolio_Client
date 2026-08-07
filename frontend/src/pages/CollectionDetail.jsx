@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCollection } from "../api/client";
-import { Loading, Empty, Stitch } from "../components/Bits";
+import { Loading, Empty, Stitch, Lightbox } from "../components/Bits";
+// import { Loading, Empty, Stitch } from "../components/Bits";
 
 export default function CollectionDetail() {
   const { slug } = useParams();
