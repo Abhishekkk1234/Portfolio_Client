@@ -10,6 +10,10 @@
   --body: "Inter", -apple-system, sans-serif;
   --max: 1280px;
 }
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
 
 * { box-sizing: border-box; }
 
@@ -307,7 +311,8 @@ h1, h2, h3 {
 
 @media (max-width: 820px) { .detail-hero { grid-template-columns: 1fr; } }
 
-.photo-tabs { display: flex; gap: 10px; margin-bottom: 28px; }
+/* .photo-tabs { display: flex; gap: 10px; margin-bottom: 28px; } */
+.photo-tabs { display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap; }
 .photo-tab {
   border: 1px solid var(--ink);
   background: transparent;
