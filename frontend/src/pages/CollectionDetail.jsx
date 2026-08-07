@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCollection } from "../api/client";
 import { Loading, Empty, Stitch, Lightbox } from "../components/Bits";
-// import { Loading, Empty, Stitch } from "../components/Bits";
 
 export default function CollectionDetail() {
   const { slug } = useParams();
   const [collection, setCollection] = useState(null);
   const [error, setError] = useState(false);
   const [tab, setTab] = useState("all");
+  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   useEffect(() => {
     setCollection(null);
@@ -30,7 +30,12 @@ export default function CollectionDetail() {
   return (
     <>
       <section className="wrap detail-hero">
-        <img src={collection.cover_image} alt={collection.title} />
+        <img
+          src={collection.cover_image}
+          alt={collection.title}
+          onDoubleClick={() => setLightboxSrc(collection.cover_image)}
+          style={{ cursor: "zoom-in" }}
+        />
         <div>
           <span className="eyebrow">{collection.genre}</span>
           <h1 style={{ fontSize: "clamp(34px,5vw,58px)" }}>{collection.title}</h1>
@@ -81,7 +86,14 @@ export default function CollectionDetail() {
         ) : (
           <div className="masonry">
             {filtered.map((img) => (
-              <img key={img.id} src={img.image} alt={img.caption || collection.title} loading="lazy" />
+              <img
+                key={img.id}
+                src={img.image}
+                alt={img.caption || collection.title}
+                loading="lazy"
+                onDoubleClick={() => setLightboxSrc(img.image)}
+                style={{ cursor: "zoom-in" }}
+              />
             ))}
           </div>
         )}
@@ -119,6 +131,8 @@ export default function CollectionDetail() {
           </div>
         )}
       </section>
+
+      <Lightbox src={lightboxSrc} alt={collection.title} onClose={() => setLightboxSrc(null)} />
     </>
   );
 }
